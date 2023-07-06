@@ -1,27 +1,15 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const db = require('./db');
+const loaders = require('./loaders');
+const { PORT } = require('./config');
 
+async function startServer() {
+    loaders(app)
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-  });
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+}
 
-  const fetchProducts = async () => {
-    try {
-      const queryText = 'SELECT * FROM products';
-      const result = await db.query(queryText);
-      const products = result.rows;
-      console.log(products);
-    } catch (error) {
-      console.error('Error executing query:', error);
-    }
-  };
-  
-  fetchProducts();
-
-const { PORT } = require('./config')
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+startServer();
