@@ -7,9 +7,9 @@ module.exports = class ProductModel {
                                FROM products`;
 
 
-            const value = [];
+            const values = [];
 
-            const result = await client.query(statement, value);
+            const result = await client.query(statement, values);
 
             if(result.rows?.length) {
                 return result.rows;
@@ -18,6 +18,27 @@ module.exports = class ProductModel {
             return [];
         } catch(err) {
             throw err;
+        }
+    }
+
+    async findProductById(id) {
+        try {
+            const statement = `SELECT * 
+                               FROM products
+                               WHERE id = $1`;
+
+            const values = [id];
+
+            const result = await client.query(statement, values);
+
+            if(result.rows?.length) {
+                return result.rows[0];
+            }
+
+            return null;
+            
+        } catch(err) {
+            throw err
         }
     }
 }
