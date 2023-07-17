@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     router.get('/', async(req, res, next) => {
         try {
-            const response = await UserServiceInstance();
+            const response = await UserServiceInstance.list();
 
             res.status(200).send(response);
         } catch(err) {

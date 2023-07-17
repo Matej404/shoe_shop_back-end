@@ -18,7 +18,8 @@
     "esm": "^3.2.25",
     "express": "^4.18.2",
     "http-errors": "^2.0.0",
-    "pg": "^8.11.1"
+    "pg": "^8.11.1",
+    "pg-promise": "^11.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.14.9"

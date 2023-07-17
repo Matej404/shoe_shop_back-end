@@ -1,4 +1,5 @@
 const client = require('../db');
+const pgp = require('pg-promise')({ capSQL: true });
 
 module.exports = class UserModel {
     async find() {
@@ -11,6 +12,25 @@ module.exports = class UserModel {
             const result = await client.query(statement, values);
 
             if(result.rows?.length) {
+                return result.rows;
+            }
+            return [];
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async findUserById(id) {
+        try {
+            const statement = `SELECT *
+                               FROM users
+                               WHERE id = $1`;
+
+            const values = [id];
+
+            const result = await client.query(statement, values);
+
+            if(result.rows?.length) {
                 return result.rows[0];
             }
             return null;
@@ -19,22 +39,39 @@ module.exports = class UserModel {
         }
     }
 
-    async findUserById(id) {
+    async findUserByEmail(email) {
         try {
             const statement = `SELECT *
                                FROM users
-                               WHERE id = 1$`;
+                               WHERE email = $1`;
+            
+            const values = [email];
 
-            const value = [id];
+            const result = await client.query(statement, values);
 
-            const result = await client.query(statement, value);
+            if(result.rows?.length) {
+                return result.rows[0];
+            } 
+
+            return null;
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async create(data) {
+        try {
+            const columns = ['email', 'password'];
+
+            const statement = pgp.helpers.insert(data, columns, 'users') + 'RETURNING *';
+            const result = await client.query(statement);
 
             if(result.rows?.length) {
                 return result.rows[0];
             }
             return null;
         } catch(err) {
-            throw(err);
+            throw err;
         }
     }
 }
