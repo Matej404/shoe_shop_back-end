@@ -20,4 +20,26 @@ module.exports = class AuthService {
             throw createError(500, err);
         }
     }
+
+    async login(data) {
+
+        const { email, password } = data;
+
+        try {
+            const user = await UserModelInstance.findUserByEmail(email);
+
+            if(!user) {
+                throw createError(401, 'Incorect username or password')
+            }
+
+            if(user.password !== password) {
+                return createError(401, 'Incorect username or password');
+            }
+
+            return user;
+
+        } catch(err) {
+            throw(500, err);
+        }
+    }
 }

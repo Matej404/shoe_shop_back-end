@@ -1,13 +1,15 @@
 const routeLoader = require('../routes');
-const cors = require('cors')
-const express = require('express');
+const passportLoader = require('./passport');
+const expressLoader = require('./express');
 
 module.exports = async(app) => {
 
-    app.use(cors());
-    app.use(express.json());
+    const expressApp = await expressLoader(app);
+    const passport = await passportLoader(expressApp);
 
-    await routeLoader(app);
+    
+
+    await routeLoader(app, passport);
 
     app.use((err, req, res, next) => {
         console.log(
