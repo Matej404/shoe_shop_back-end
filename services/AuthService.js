@@ -33,13 +33,13 @@ module.exports = class AuthService {
             }
 
             if(user.password !== password) {
-                return createError(401, 'Incorect username or password');
+                throw createError(401, 'Incorect username or password');
             }
 
             return user;
 
         } catch(err) {
-            throw(500, err);
+            throw createError(500, err);
         }
     }
 }
