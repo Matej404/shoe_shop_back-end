@@ -18,4 +18,17 @@ module.exports = (app) => {
             next(err);
         }
     })
+
+    router.post('/mine/items', async(req, res, next) => {
+        try {
+            const { id } = req.user;
+            const data = req.body;
+
+            const response = await CartServiceInstance.addItem(id, data);
+
+            res.status(200).send(response);
+        } catch(err) {
+            next(err);
+        }
+    })
 }
