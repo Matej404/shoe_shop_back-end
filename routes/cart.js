@@ -31,4 +31,17 @@ module.exports = (app) => {
             next(err);
         }
     })
+
+    router.put('/mine/items/:cartItemId', async(req, res, next) => {
+        try {
+            const {cartItemId} = req.params;
+            const data = req.body;
+
+            const response = await CartServiceInstance.updateItem(cartItemId, data);
+
+            res.status(200).send(response);
+        } catch(err) {
+            next(err);
+        }
+    })
 }

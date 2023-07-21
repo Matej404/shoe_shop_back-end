@@ -27,4 +27,14 @@ module.exports = class CartService {
             throw err;
         }
     }
+
+    async updateItem(cartItemId, data) {
+        try {
+            const cartItem = await CartItemModelInstance.update(cartItemId, data);
+
+            return cartItem;
+        } catch(err) {
+            throw err;
+        }
+    }
 }

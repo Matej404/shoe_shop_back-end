@@ -17,4 +17,21 @@ module.exports = class CartItemModel {
             throw err;
         }
     }
+
+    async update(id, data) {
+        try {
+            const condition = pgp.as.format('WHERE id = ${id} RETURNING *', {id});
+            const statement = pgp.helpers.update(data, null, 'cartItems') + condition;
+
+            const result = await client.query(statement);
+
+            if(result.rows?.length) {
+                return result.rows[0];
+            }
+
+            return null;
+        } catch(err) {
+            throw err;
+        }
+    }
 }
