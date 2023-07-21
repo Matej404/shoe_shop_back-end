@@ -34,4 +34,25 @@ module.exports = class CartItemModel {
             throw err;
         }
     }
+
+    async delete(id) {
+        try {
+            const statement = `DELETE
+                               FROM "cartItems"
+                               WHERE id = $1
+                               RETURNING *`;
+
+            const values = [id];
+
+            const result = await client.query(statement, values);
+
+            if(result.rows?.length) {
+                return result.rows[0]
+            }
+
+            return null;
+        } catch(err) {
+            throw err;
+        }
+    }
 }

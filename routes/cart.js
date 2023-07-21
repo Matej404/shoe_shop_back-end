@@ -44,4 +44,16 @@ module.exports = (app) => {
             next(err);
         }
     })
+
+    router.delete('/mine/items/:cartItemId', async(req, res, next) => {
+        try {
+            const { cartItemId } = req.params;
+
+            const response = await CartServiceInstance.removeItem(cartItemId);
+
+            res.status(200).send(response);
+        } catch(err) {
+            next(err);
+        }
+    })
 }
