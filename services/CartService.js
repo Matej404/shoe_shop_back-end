@@ -5,6 +5,18 @@ const CartItemModel = require('../models/cartItem');
 const CartItemModelInstance = new CartItemModel();
 
 module.exports = class CartService {
+    async loadCart(userId) {
+        try {
+            const cart = await CartModelInstance.findCartByUser(userId);
+            const items = await CartItemModelInstance.find(cart.id);
+
+             cart.item = items;
+            return cart;
+        } catch(err) {
+            throw err;
+        }
+    }
+
     async create(data) {
         const { userId } = data;
 
